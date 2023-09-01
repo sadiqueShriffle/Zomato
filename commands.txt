@@ -1,0 +1,6 @@
+user = User.create(name: 'zaid', email: 'zaid@gmail.com', type:'Customer' , password: '12345')
+ 
+ 
+ user.restaurents.create(name: 'Guru Kripa' , place: 'indore', status: 'open')
+
+  restaurent.categories.create(name: 'French')
