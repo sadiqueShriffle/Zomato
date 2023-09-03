@@ -1,12 +1,12 @@
-# # db/seeds.rb
+ # db/seeds.rb
 
 # # Create users
-owner = User.create(name: 'sadique', 'owner@example.com', password: 12345, user_type: 'owner')
-customer = User.create(name: 'mohit',email: 'customer@example.com', password: 12345, user_type: 'customer')
+owner = User.create(name: 'sadique',email: 'owner@gmail.com', password: '12345', type: 'Owner')
+customer = User.create(name: 'mohit',email: 'customer@gmail.com', password: '12345',type: 'Customer')
 
-# # Create restaurants with categories and dishes
-restaurant1 = owner.restaurants.create(name: 'Restaurant 1', place: 'indore',status: 'open')
-restaurant2 = owner.restaurants.create(name: 'Restaurant 2', place: 'dewas', status: 'open')
+# # Create restaurents with categories and dishes
+restaurant1 = owner.restaurents.create(name: 'Restaurant 1', place: 'indore',status: 'open')
+restaurant2 = owner.restaurents.create(name: 'Restaurant 2', place: 'dewas', status: 'open')
 
 category1 = restaurant1.categories.create(name: 'Chinese')
 category2 = restaurant1.categories.create(name: 'Italian')
@@ -21,14 +21,14 @@ dish6 = category3.dishes.create(name: 'Saahi Paneer', price: 450, dish_type: 've
 
 
 # # Create a cart and add items
-cart = customer.cart || customer.build_cart
+cart = customer.cart || customer.create_cart
 cart.cart_items.create(dish: dish1, quantity: 3)
 cart.cart_items.create(dish: dish2, quantity: 1)
 cart.cart_items.create(dish: dish3, quantity: 2)
 cart.cart_items.create(dish: dish6, quantity: 5)
 
 # # Create orders and cart items
-order1 = customer.orders.create(name: 'customer_name',shipping_address: '321, Azad Nagar indore')
+order1 = customer.orders.create(name: 'Sadique',shipping_address: '321, Azad Nagar indore')
 order2 = customer.orders.create(name: 'Shriffle Technologies',shipping_address: 'Vijay Nagar indore')
 
 
@@ -48,3 +48,38 @@ customer.cart_items.each do |cart_item|
 order2.order_items.create(dish_id: cart_item.dish_id, quantity: cart_item.quantity)
 end
 customer.cart.cart_items.destroy_all
+
+
+
+
+
+
+
+
+
+
+
+# {
+#   "restaurent": {
+#     "name": "The Naan House",
+#     "place": "bhopal",
+#     "status": "open",
+#     "categories_attributes": [
+#       {
+#         "name": "Turkish",
+#         "dishes_attributes": [
+#           { "name": "Kabsa", "price": 770,"dish_type": "veg" },
+#           { "name": "Swarma","price": 350,"dish_type": "nonveg" }
+#         ]
+#       },
+#       {
+#         "name": "Italian",
+#         "dishes_attributes": [
+#           { "name": "Pizza", "price": 570,"dish_type": "veg" },
+#           { "name": "Risotto","price": 400,"dish_type": "nonveg" }
+#         ]
+#       }
+#     ]
+#   }
+# }
+

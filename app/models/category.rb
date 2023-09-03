@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-	has_many :dishes
+	has_many :dishes , dependent: :destroy
 	validates :name, presence: true
 	accepts_nested_attributes_for :dishes, allow_destroy: true
 

@@ -1,12 +1,13 @@
 class RestaurentsController < ApplicationController
-	# before_action :authenticate_user, except: [:show,:index,:search]
+	# skip_before_action :authenticate_user, only: [:index,:search] 
 
 	skip_before_action :customer_check
-  skip_before_action :owner_check ,only: [:index,:search ,:show]
+	skip_before_action :owner_check , only: [:index,:search,:show]
 
-	before_action :set_values , only: [:show,:update , :destroy,:new]
+	before_action :set_values , only: [:show,:update , :destroy]
 
 	def index
+		@current_user
 		return render json: @current_user.restaurents if @current_user.owner?
 		restaurent = Restaurent.where(status: 'open')
 		render json: restaurent
@@ -15,17 +16,17 @@ class RestaurentsController < ApplicationController
 	def show 
 		if @current_user.owner?
 		dish = @current_user.restaurents.includes(categories: :dishes).find(params[:id]) 
-    render json: dish, include: { categories: { include: :dishes } } 
-		else
-		dish= Restaurent.includes(categories: :dishes).find(params[:id]) 
+    	render json: dish, include: { categories: { include: :dishes } } 
+		else	
+		dish= Restaurent.find(params[:id])
 		render json: dish, include: { categories: { include: :dishes } } 
 		end
 	end
 
 	def new
 		@restaurent = @current_user.restaurents.new
-		@restaurent.categories.build 
-		@restaurent.categories.each {|category| category.dishes.build}
+		@restaurent.categories.new 
+		@restaurent.categories.each {|category| category.dishes.new}
 	end
 
 	def create
@@ -38,13 +39,13 @@ class RestaurentsController < ApplicationController
 	end
 
 	def update
-		return render json: @restaurent	if @restaurent.update(restaurent_params)
-		render json: @restaurent.errors.full_messages
+		return render json: {message: " Updated successfully!!", data:@restaurent}	if @restaurent.update(restaurent_params)
+		render json: {errors: @restaurent.errors.full_messages}
 	end
 
 	def destroy
-		return render json: {message: 'Restaurent Remove Successfully'} if @restaurent.destroy
-		render json: {message: "Restaurent does't Remove"}
+		return render json: {message: " Restaurent Deleted successfully!!", data:@restaurent} if @restaurent.destroy
+		render json: {errors: @restaurent.errors.full_messages}
 	end
 
 	def search
@@ -67,38 +68,15 @@ class RestaurentsController < ApplicationController
 							:name,
 							:price,
 							:dish_type
+							
 						]
 				]
 		)
 	end
 
 	def set_values
-		@restaurent = @current_user.restaurents.find(params[:id])
+		@restaurent = Restaurent.find(params[:id])
 	end
 
 end
-
-# {
-#   "restaurent": {
-#     "name": "The Naan House",
-#     "place": "bhopal",
-#     "status": "open",
-#     "categories_attributes": [
-#       {
-#         "name": "Turkish",
-#         "dishes_attributes": [
-#           { "name": "Kabsa", "price": 770,"dish_type": "veg" },
-#           { "name": "Swarma","price": 350,"dish_type": "nonveg" }
-#         ]
-#       },
-#       {
-#         "name": "Italian",
-#         "dishes_attributes": [
-#           { "name": "Pizza", "price": 570,"dish_type": "veg" },
-#           { "name": "Risotto","price": 400,"dish_type": "nonveg" }
-#         ]
-#       }
-#     ]
-#   }
-# }
 

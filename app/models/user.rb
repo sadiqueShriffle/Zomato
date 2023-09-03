@@ -1,8 +1,8 @@
 class User < ApplicationRecord
 	has_secure_password
 
-	has_many :restaurents
-	has_many :orders
+	has_many :restaurents , dependent: :destroy
+	has_many :orders  , dependent: :destroy
 	has_one  :cart , dependent: :destroy
 	has_many :categories, through: :restaurents
 	has_many :dishes, through: :categories

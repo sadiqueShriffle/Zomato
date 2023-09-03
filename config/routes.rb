@@ -1,5 +1,5 @@
 Rails.application.routes.draw  do
-  root 'dish#index'
+  # root 'dish#index'
   post '/login', to: 'authentication#login'
   post "/signup", to: "users#create"
   resource :user,  except: :create

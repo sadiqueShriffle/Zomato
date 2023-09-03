@@ -3,10 +3,6 @@ class Cart < ApplicationRecord
     has_many :cart_items, dependent: :destroy
     has_many :dishes, through: :cart_items
 
-    
-    # accepts_nested_attributes_for :cart_items, allow_destroy: true
-
-
     validate :customer_only_add_restaurent
 
     private

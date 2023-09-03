@@ -75,3 +75,5 @@ end
 gem "byebug"
 gem 'active_model_serializers'
 gem 'kaminari'
+
+gem 'will_paginate'

@@ -1,8 +1,7 @@
 class Restaurent < ApplicationRecord
 	belongs_to :user
-	has_many :categories
+	has_many :categories , dependent: :destroy
 	has_many :dishes, through: :categories
-	
 	accepts_nested_attributes_for :categories, allow_destroy: true
 	before_save :remove_space
 

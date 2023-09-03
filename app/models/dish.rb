@@ -1,10 +1,10 @@
 class Dish < ApplicationRecord
-	paginates_per 25
+	# paginates_per 25
 
 	belongs_to :category
-	has_many :cart_items
-	has_many :orders, class_name: 'Order' , foreign_key: 'dish_id'
-	has_one_attached :image, dependent: :destroy
+	has_many :cart_items , dependent: :destroy
+	has_many :order_items,dependent: :destroy
+	has_many_attached :images , dependent: :destroy
 
 	enum dish_type: {veg: 'veg',nonveg: 'nonveg'}
 

@@ -12,24 +12,19 @@ class DishesController < ApplicationController
   def create
     restaurant = params[:restaurent_id]
     category = params[:category_id]
-    dish = @current_user.restaurents.find(restaurant).categories.find(category).dishes.new(set_params)
+    dish = @current_user.restaurents.find(restaurant).categories.find(category).dishes.new(dish_params)
     return render json: dish ,state:200 if dish.save
+    render json: [@user.errors], status: :unprocessable_entity
+
   end
 
   def update
-    restaurant = params[:restaurent_id]
-    category = params[:category_id]
-    d_id = params[:dish_id]
-    dish = @current_user.restaurents.find(restaurant).categories.find(category).dishes.find(d_id).update(set_params)
+    dish = @current_user.restaurents.find(params[:restaurent_id]).categories.find(params[:category_id]).dishes.find(params[:dish_id]).update(dish_params)
     render json: "Dish Updated Successfully", status:200
   end
 
   def destroy
-    restaurant = params[:restaurent_id]
-    category = params[:category_id]
-    dish_id = params[:dish_id]
-    byebug
-    @current_user.restaurents.find(restaurant).categories.find(category).dishes.find(dish_id).destroy 
+    @current_user.dishes.find(params[:dish_id]).destroy 
     render json: "Dish Deleted  Successfully", status:200 
   end
 
@@ -41,14 +36,21 @@ class DishesController < ApplicationController
       search_by_restaurent_id    
     else
     return render json: Dish.all unless @current_user.customer?
-
-    return render json: @current_user.dishes 
     end
+     render json: @current_user.dishes 
   end
 
+  def filter_by_category
+    if @current_user.owner?
+      owner_dish = @current_user.categories.where("categories.name ILIKE ?", "%#{params[:name].strip}%")
+      return render json: owner_dish || [], status: 200
+    end
+    custoemr_dish = Category.where("name ILIKE ?", "%#{params[:name].strip}%")
+    render json: customer_dish || [], status: 200
+  end
 
   private
-  def search_by_name 
+  def search_by_name
     name = params[:name]
     return render json: 'Name Cannot be blank' if name.blank?
     if @current_user.owner?
@@ -58,7 +60,6 @@ class DishesController < ApplicationController
     end
   end
 
-
   def search_by_restaurent_id 
     restaurent_id = params[:restaurent_id]
     return render json: 'Empty Restaurent ID' unless restaurent_id.present?
@@ -67,47 +68,24 @@ class DishesController < ApplicationController
   end
 
   def owner_dish
-    name = params[:name]
-    ow_dish= @current_user.dishes.where(name: name)
+    ow_dish= @current_user.dishes.where("dishes.name ILIKE ?", "%#{params[:name].strip}%")
     return render json: ow_dish unless ow_dish.empty?
     render json: 'No matching result found'
   end
 
   def customer_dish
-    name = params[:name]
-    cu_dish=Dish.where(name: name)
+    ow_dish= @current_user.dishes.where("dishes.name ILIKE ?", "%#{params[:name].strip}%")
     return render json: cu_dish unless cu_dish.empty?
     render json: 'No matching result found'
   end
 
-  def filter_by_category
-    category_name = params[:name]
-    return render json: 'Empty Category Name' if category_name.empty?
-    restaurent_id = params[:restaurent_id]
-    category_data = Category.find_by(name: category_name.strip)    
-    if @current_user.owner?
-    owner_dish = @current_user.restaurents.find(restaurent_id).categories.find(category_data.id).dishes 
-    return render json: owner_dish 
-    end
-    customer_dish = Restaurent.find(restaurent_id).categories.find(category_data.id).dishes
-    render json: customer_dish, status:200
-  end
-
-
-  def set_params
-    params.permit(:name ,:price ,:dish_type,:image)
+  def dish_params
+    params.permit(:name ,:price ,:dish_type)
   end 
 
   # def find_dish_id
-  #   @dish = @current_user.restaurants.dishes.find(params[:id])
-  #   unless @dish
-  #     render json: {error: "Enter valid dish id.."}
-  #   end
-  #   rescue NoMethodError
-  #   render json: {message: "Add restaurant first.."}
+  #   @dish = @current_user.dishes(params[:id])
   # end
-
-
 
 end
 
