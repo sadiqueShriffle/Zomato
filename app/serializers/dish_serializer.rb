@@ -1,7 +1,10 @@
 class DishSerializer < ActiveModel::Serializer
-  attributes :id ,:name, :price ,:dish_type
+  attributes :id ,:name, :price ,:dish_type,:images
 
-  # def dish_image
-  #   object.image.url
-  # end
+  def images 
+    object.images.map do |data|
+      data.url
+    end
+  end
+
 end

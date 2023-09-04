@@ -39,11 +39,11 @@ class ApplicationController < ActionController::API
   rescue_from NoMethodError, with: :handle_pram_exception
   
   def handle_exception
-    render json: { error: 'Invalid Id ' }
+    render json: { error: 'Invalid Id ' }, status:404
   end
 
   def handle_pram_exception
-    render json: {error: 'Param is missing or Empty Value'}
+    render json: {error: 'Param is missing or Empty Value'}, status:406
   end
 
 end

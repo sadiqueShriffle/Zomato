@@ -80,7 +80,7 @@ class DishesController < ApplicationController
   end
 
   def dish_params
-    params.permit(:name ,:price ,:dish_type)
+    params.require(:dish).permit(:name ,:price ,:dish_type,images: [])
   end 
 
   # def find_dish_id

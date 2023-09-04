@@ -1,6 +1,4 @@
 class RestaurentsController < ApplicationController
-	# skip_before_action :authenticate_user, only: [:index,:search] 
-
 	skip_before_action :customer_check
 	skip_before_action :owner_check , only: [:index,:search,:show]
 
