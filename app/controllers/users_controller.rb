@@ -9,9 +9,12 @@ class UsersController < ApplicationController
   end
 
   def create
-    sign_up = User.new(user_param)
-    return render json: sign_up  if sign_up.save
-    render json: sign_up.errors.full_messages
+    @sign_up = User.new(user_param)
+    if @sign_up.save
+    UserMailer.user_email(@sign_up).deliver_now!
+    return render json: @sign_up
+    end
+    render json: @sign_up.errors.full_messages
   end
 
   def update

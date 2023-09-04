@@ -8,7 +8,7 @@ Rails.application.routes.draw  do
   get '/restaurent/search' , to: "restaurents#search"
   resources :restaurents 
 
-  resource :dishes
+  resources :dishes
   # get '/index', to: 'dishes#index'
   get '/dish/search', to: 'dishes#search_dish'
   get '/category/search', to: 'dishes#filter_by_category'

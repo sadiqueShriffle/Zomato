@@ -3,8 +3,9 @@ class DishesController < ApplicationController
   skip_before_action :owner_check ,only: [:show ,:search_dish,:filter_by_category,:update]
   skip_before_action :customer_check 
   
+  
   def show
-    dish = Dish.all 
+    @dish = Dish.all..page params[:page]
     return  render json: dish  if @current_user.customer?
     render json: @current_user.categories, include: :dishes
   end
@@ -83,9 +84,6 @@ class DishesController < ApplicationController
     params.require(:dish).permit(:name ,:price ,:dish_type,images: [])
   end 
 
-  # def find_dish_id
-  #   @dish = @current_user.dishes(params[:id])
-  # end
 
 end
 
