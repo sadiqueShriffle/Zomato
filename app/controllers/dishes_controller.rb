@@ -5,9 +5,12 @@ class DishesController < ApplicationController
   
   
   def show
-    @dish = Dish.all..page params[:page]
-    return  render json: dish  if @current_user.customer?
-    render json: @current_user.categories, include: :dishes
+    dish = Dish.paginate(page: params[:page], per_page: 2)
+    render json: dish, status:200
+
+    # dish = Dish.all.page params[:page]
+    # return  render json: dish  if @current_user.customer?
+    # render json: @current_user.categories, include: :dishes
   end
 
   def create
