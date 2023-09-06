@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_param)
     if @user.save
-    UserMailer.with(user: @user).user_email.deliver_now
+    UserMailer.with(user: @user).welcome_email.deliver_later
     return render json: @user
     end
     render json: @user.errors.full_messages

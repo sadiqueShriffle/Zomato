@@ -44,7 +44,6 @@ class CartsController < ApplicationController
   end
 
   private
-
   def set_cart
     @cart=@current_user.create_cart unless @current_user.cart.present?
     
