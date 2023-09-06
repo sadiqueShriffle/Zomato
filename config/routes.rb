@@ -8,13 +8,9 @@ Rails.application.routes.draw  do
   get '/restaurent/search' , to: "restaurents#search"
   resources :restaurents 
 
-  resources :dishes
-  # get '/index', to: 'dishes#index'
+  resource :dishes
   get '/dish/search', to: 'dishes#search_dish'
   get '/category/search', to: 'dishes#filter_by_category'
-
-  # get '/page/:page', action: :index, on: :collection
-
 
   
   post '/additems' , to: "carts#add_item"

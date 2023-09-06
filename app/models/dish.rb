@@ -1,5 +1,4 @@
 class Dish < ApplicationRecord
-	 paginates_per 25
 
 	belongs_to :category
 	has_many :cart_items , dependent: :destroy

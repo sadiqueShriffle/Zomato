@@ -5,19 +5,18 @@ class RestaurentsController < ApplicationController
 	before_action :set_values , only: [:show,:update , :destroy]
 
 	def index
-		@current_user
-		return render json: @current_user.restaurents if @current_user.owner?
-		restaurent = Restaurent.where(status: 'open')
+		return render json: @current_user.restaurents.paginate(page: params[:page], per_page: 1) if @current_user.owner?
+		restaurent = Restaurent.where(status: 'open').paginate(page: params[:page], per_page: 2)
 		render json: restaurent
 	end
 
 	def show 
 		if @current_user.owner?
-		dish = @current_user.restaurents.includes(categories: :dishes).find(params[:id]) 
+			dish = @current_user.restaurents.includes(categories: :dishes).find(params[:id]) 
     	render json: dish, include: { categories: { include: :dishes } } 
 		else	
-		dish= Restaurent.find(params[:id])
-		render json: dish, include: { categories: { include: :dishes } } 
+			dish= Restaurent.find(params[:id])
+			render json: dish, include: { categories: { include: :dishes } } 
 		end
 	end
 

@@ -3,6 +3,5 @@ class OrderSerializer < ActiveModel::Serializer
 
   belongs_to :user, serializer: UserSerializer
 
-
   has_many :order_items, serializer: OrderitemsSerializer
 end
