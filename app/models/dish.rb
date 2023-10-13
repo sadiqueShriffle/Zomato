@@ -6,7 +6,8 @@ class Dish < ApplicationRecord
 
 	enum dish_type: {veg: 'veg',nonveg: 'nonveg'}
 
-	validates :name,:dish_type ,presence: true
+	validates :name,:dish_type,:price,presence: true
+	validates :price, numericality: { grater_than_or_equal_to: 1}
 
 	before_save :remove_space
 

@@ -66,12 +66,12 @@ group :development do
   # gem "spring"
   gem "letter_opener"
 
-  gem "byebug"
+  # gem "byebug"
   gem 'active_model_serializers'
   gem 'kaminari'
   gem 'will_paginate'
   gem 'rubocop'
-
+  gem "cancan"
 end
 
 group :test do
@@ -79,5 +79,14 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+  gem "shoulda-matchers", '~> 5.0' 
+  gem 'simplecov',      '~> 0.15.1'
+end
+
+group :development, :test do
+  gem 'rspec-rails', '~> 6.0.0'
+  gem 'factory_bot_rails'
+  gem 'faker'
+  gem "byebug"
 end
 

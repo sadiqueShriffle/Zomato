@@ -61,7 +61,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: Zomato_test
+  database: Zomato_Testing_API
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -83,8 +83,8 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
-  <<: *default
-  database: Zomato_production
-  username: Zomato
-  password: <%= ENV["ZOMATO_DATABASE_PASSWORD"] %>
+# production:
+#   <<: *default
+#   database: Zomato_production
+#   username: Zomato
+#   password: <%= ENV["ZOMATO_DATABASE_PASSWORD"] %>

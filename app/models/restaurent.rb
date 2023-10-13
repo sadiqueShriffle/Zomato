@@ -8,7 +8,7 @@ class Restaurent < ApplicationRecord
 	enum status: {open: 'open',close: 'close'}
 
 	validates :name, :place,:status,  presence: true
-	validate :owner_only_add_restaurent
+	# validate :owner_only_add_restaurent
 
 	private
 	def remove_space

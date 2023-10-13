@@ -9,7 +9,6 @@ class User < ApplicationRecord
 	has_many :cart_items, through: :cart
 	has_many :cart_dish, through: :cart_items
 	has_many :order_items, through: :orders
-	has_one_attached :image, dependent: :destroy
 
 	
 	before_save :remove_space

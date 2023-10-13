@@ -16,7 +16,7 @@ class RestaurentsController < ApplicationController
 		else	
 			restaurent= Restaurent.find(params[:id])
 		end
-		render json: restaurent. status:200
+		render json: restaurent, status:200
 	end
 
 	def new

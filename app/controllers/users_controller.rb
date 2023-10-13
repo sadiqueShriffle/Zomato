@@ -5,14 +5,14 @@ class UsersController < ApplicationController
   skip_before_action :owner_check
 
   def show
-    render json: @current_user
+    render json: @current_user, status:200
   end
 
   def create
     user = User.new(user_param)
     if user.save
       UserMailer.with(user: user).welcome_email.deliver
-      return render json: user
+      return render json: user, status:200
     end
     render json: user.errors.full_messages
   end
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
   private
   def user_param
-    params.permit([:name,:email,:password,:type,:image])
+    params.permit([:name,:email,:password,:type])
   end
 
 end
