@@ -5,9 +5,12 @@ class RestaurentsController < ApplicationController
 	before_action :set_values , only: [:show,:update , :destroy]
 
 	def index
-		return render json: @current_user.restaurents.paginate(page: params[:page], per_page: 1) if @current_user.owner?
-		restaurent = Restaurent.where(status: 'open').paginate(page: params[:page], per_page: 2)
-		render json: restaurent
+		if @current_user.owner?
+		restaurent = @current_user.restaurents
+		else
+		restaurent = Restaurent.where(status: 'open')
+		end
+		render json: restaurent, status:200
 	end
 
 	def show 
@@ -35,13 +38,16 @@ class RestaurentsController < ApplicationController
 	end
 
 	def update
-		return render json: {message: " Updated successfully!!", data:@restaurent}	if @restaurent.update(restaurent_params)
-		render json: {errors: @restaurent.errors.full_messages}, status: :unprocessable_entity
-	end
+		if @restaurent.update(restaurent_params)
+			render json: {message: " Updated successfully!!", data:@restaurent}, status:200
+		else
+			render json: {errors: @restaurent.errors.full_messages}, status: :unprocessable_entity
+		end
+		end
 
 	def destroy
 		return render json: {message: " Restaurent Deleted successfully!!", data:@restaurent} if @restaurent.destroy
-		render json: {errors: @restaurent.errors.full_messages}, status: :unprocessable_entity
+		render json: {errors: @restaurent.errors.full_messages}, status:404
 	end
 
 	def search

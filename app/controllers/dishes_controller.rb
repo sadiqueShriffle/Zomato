@@ -1,31 +1,40 @@
 class DishesController < ApplicationController
-  skip_before_action :owner_check ,only: [:show ,:search_dish,:filter_by_category]
+  skip_before_action :owner_check ,only: [:show,:index,:search_dish,:filter_by_category]
   skip_before_action :customer_check 
 
-  def show
+  def index
     if params[:name].present? && params[:restaurent_id].present?
-      dish=filter_by_category
+      dishes = filter_by_category
     elsif params[:name].present?
-      dish=search_by_name
+      dishes=search_by_name
     elsif params[:restaurent_id].present?
-      dish=search_by_restaurent_id    
+      dishes=search_by_restaurent_id   
+    elsif params[:category_id].present?
+      dishes=Category.find(params[:category_id]).dishes    
     else
       if @current_user.customer?
-        dish= Dish.all 
+        dishes= Dish.all 
       else
-        dish= @current_user.dishes 
+        dishes= @current_user.dishes
       end
     end
-     render json: dish.paginate(page: params[:page], per_page: 5)
+    # dishes=dishes.paginate(page: params[:page], per_page: 2)
+      render json: dishes
   end
   
 
+  def show
+    dish= Dish.find(params[:id])
+    render json: dish,status:200  
+  end
+  
+  
   def create
     restaurant = params[:restaurent_id]
     category = params[:category_id]
     dish = @current_user.restaurents.find(restaurant).categories.find(category).dishes.new(dish_params)
     return render json: dish ,state:200 if dish.save
-    render json: [@user.errors], status: :unprocessable_entity
+    render json: [dish.errors], status: :unprocessable_entity
   end
 
   def update
@@ -38,8 +47,6 @@ class DishesController < ApplicationController
     render json: "Dish Deleted  Successfully", status:200 
   end
 
-
-
   private
   def search_by_restaurent_id 
     restaurent_id = params[:restaurent_id]
@@ -47,6 +54,12 @@ class DishesController < ApplicationController
     restaurent=Restaurent.find(restaurent_id).dishes
     return restaurent
   end
+
+  def search_by_name
+    dish = Dish.where("dishes.name ILIKE ?", '%#{params[:name].strip}%')
+    return dish
+  end
+
 
   def filter_by_category
     if @current_user.owner?
@@ -58,7 +71,7 @@ class DishesController < ApplicationController
   end
 
   def owner_dish
-    ow_dish= @current_user.dishes.where("dishes.name ILIKE ?", "%#{params[:name].strip}%")
+    ow_dish= current_user.dishes.where("dishes.name ILIKE ?", "%#{params[:name].strip}%")
     return ow_dish 
   end
 
@@ -67,8 +80,9 @@ class DishesController < ApplicationController
     return cu_dish 
   end
 
+
   def dish_params
-    params.require(:dish).permit(:name ,:price ,:dish_type,images: [])
+    params.permit([:name ,:price ,:dish_type])
   end 
 
 end

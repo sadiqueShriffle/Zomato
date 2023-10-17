@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   skip_before_action :owner_check
-  before_action :set_order, only: [:show, :update, :destroy]
+  before_action :set_order, only: [ :update, :destroy]
 
   def index
     orders = @current_user.orders.includes(:order_items)
@@ -9,8 +9,9 @@ class OrdersController < ApplicationController
   end
 
   def show
+    byebug
     order = @current_user.orders.find(params[:id])
-    render json: order, state:200
+    render json: order
   end
 
   def create
@@ -19,7 +20,6 @@ class OrdersController < ApplicationController
     order.order_items.new(dish_id: cart_item.dish_id, quantity: cart_item.quantity)
     end
     if order.save
-      # OrderMailer.with(user: @current_user).welcome_email.deliver
       @current_user.cart.cart_items.destroy_all
       render json: order, status: :created
     else

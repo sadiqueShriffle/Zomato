@@ -81,12 +81,14 @@ group :test do
   gem "webdrivers"
   gem "shoulda-matchers", '~> 5.0' 
   gem 'simplecov',      '~> 0.15.1'
+  gem "byebug"
+
 end
 
 group :development, :test do
   gem 'rspec-rails', '~> 6.0.0'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem "byebug"
+  # gem "byebug"
 end
 

@@ -6,12 +6,9 @@ FactoryBot.define do
     email { Faker::Internet.unique.email }
     password { 'password123' }
     password_confirmation { 'password123' }
-    image { nil }
-
     # trait :owner do
     # type { 'owner' } # If you have different user types
     # end
-    type { 'Owner' } # Adjust based on your user types
+    type { 'Customer' } # Adjust based on your user types
   end
 end
-  

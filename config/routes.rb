@@ -11,13 +11,14 @@ Rails.application.routes.draw  do
   resources :restaurents 
 
   # Dish Routes
-  resource :dishes
+  resources :dishes
   get '/dish/search', to: 'dishes#search_dish'
   get '/category/search', to: 'dishes#filter_by_category'
 
   # Cart Routes
   post '/additems' , to: "carts#add_item"
   resource :cart
+  post '/clear_cart' ,to: "carts#clear_cart"
 
   # Orders Routes
   resources :orders
