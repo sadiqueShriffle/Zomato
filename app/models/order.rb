@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   validates :shipping_address,:total_amount,:unique_order_id ,presence: :true 
   validates :total_amount, numericality: { grater_than_or_equal_to: 1}
 
-  # after_create :create_order_mail
+  before_save :generate_order_id,:calculate_total_amount
 
   # def create_order_mail
   #   OrderMailer.with(user: self).welcome_email.deliver

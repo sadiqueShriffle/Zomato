@@ -54,7 +54,14 @@ RSpec.describe UsersController, type: :controller do
       expect {
         post :create, params: { user: { name: 'New User', email: 'newuser@example.com', type: 'Customer', password: '123456' } }
       }.to change(User, :count).by(0)
+
+      # expect(user.name).to eq('New User')
+      # expect(user.email).to eq('newuser@example.com',)
+      # expect(user.type).to eq('Customer')
+      # expect(user.name).to eq('123456')
+
       expect(response).to have_http_status(200)
     end
   end
+  
 end

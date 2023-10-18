@@ -11,4 +11,4 @@ FactoryBot.define do
     # end
     type { 'Customer' } # Adjust based on your user types
   end
-end
+end 

@@ -19,6 +19,7 @@ class OrdersController < ApplicationController
     @current_user.cart_items.each do |cart_item|
     order.order_items.new(dish_id: cart_item.dish_id, quantity: cart_item.quantity)
     end
+    byebug
     if order.save
       @current_user.cart.cart_items.destroy_all
       render json: order, status: :created
@@ -42,6 +43,7 @@ class OrdersController < ApplicationController
 
   private
   def set_order
+    byebug
     @order = @current_user.orders.find(params[:id])
   end
 

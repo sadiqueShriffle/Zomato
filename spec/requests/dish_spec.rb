@@ -50,13 +50,6 @@ RSpec.describe DishesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    # let!(:dish) { Dish.create(name: 'Test Dish', restaurant_id: @restaurant.id, category_id: @category.id) }
-
-    # it 'return not found when passing invalid id' do 
-    #   request.headers['Authorization'] = "Bearer #{@token}"
-    #   delete :destroy, params: {id: -1 }
-    #   expect(response).to have_http_status(404)
-    # end
     it 'deletes the dish with a valid token' do
       request.headers['Authorization'] = "Bearer #{@token}"
       expect {
@@ -77,7 +70,6 @@ RSpec.describe DishesController, type: :controller do
         post :create, params: { dish: { restaurent_id: @restaurent.id, category_id: @category.id,name: 'New Dish',price: 150, dish_type: 'veg',  } }
       }.to change(Dish, :count).by(0)
     end
-
     it 'returns unauthorized without a token' do
       post :create, params: { dish: { name: 'New Dish', restaurent_id: @restaurent.id, category_id: @category.id } }
       expect(response).to have_http_status(401)
@@ -91,7 +83,6 @@ RSpec.describe DishesController, type: :controller do
       get :index, params: { restaurent_id: @restaurent.id}
       expect(response).to be_successful
     end
-
     it 'searches for a  Category Dish ' do
       request.headers['Authorization'] = "Bearer #{@token}"
       get :index, params: { restaurent_id: @restaurent.id , name: 'New Dish'}
